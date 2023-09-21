@@ -1,0 +1,12 @@
+name: 'Validate JSON data inside YAML files'
+description: 'Github Action detects and validates JSON data inside the YAML files.'
+author: 'Dung Pham'
+
+inputs:
+  yaml-files:
+    description: 'A list of YAML files to validate.'
+    required: true
+
+runs:
+  using: 'python'
+  main: 'main.py'

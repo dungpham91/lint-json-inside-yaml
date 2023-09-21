@@ -1,0 +1,3 @@
+---
+TEST_DATA_WITH_EMPTY_JSON: true
+JSON_DATA: "empty"

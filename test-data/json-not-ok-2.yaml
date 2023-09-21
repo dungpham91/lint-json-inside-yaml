@@ -1,0 +1,21 @@
+# Miss the character , at the line number 9
+---
+TEST_DATA_WITH_INVALID_JSON: >-
+  {
+    "value-1": 0,
+    "value-2": 0,
+    "value-3": 0,
+    "value-4": 0,
+    "value-5": 0
+    "value-6": [
+      01,
+      02,
+      03
+    ],
+    "value-7": [
+      01,
+      02,
+      03,
+      04
+    ]
+  }
