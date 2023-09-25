@@ -1,4 +1,4 @@
-# Test with >
+# Test with > (YAML Folded Style)
 ---
 TEST_DATA_WITH_VALID_JSON: >
   {
@@ -8,3 +8,5 @@ TEST_DATA_WITH_VALID_JSON: >
     "value-4": 0,
     "value-5": 0
   }
+
+TEST_DATA_WITH_VALID_JSON: true

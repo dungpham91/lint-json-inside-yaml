@@ -1,0 +1,3 @@
+# Test directly JSON in once line
+---
+TEST_DATA_WITH_VALID_JSON: {"value-1": 0, "value-2": 0}
