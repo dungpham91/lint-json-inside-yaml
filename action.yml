@@ -23,6 +23,7 @@ runs:
       run: |
         # export LOGFILE=$(mktemp lintjson-data-XXXXXX)
         ${{ github.action_path }}/main.py
+      shell: bash
       env:
         INPUT_FILE_OR_DIR: ${{ inputs.folder_or_file }}
         INPUT_FORMAT: ${{ inputs.format }}
