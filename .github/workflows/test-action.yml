@@ -22,4 +22,4 @@ jobs:
       - name: json-lint
         uses: dungpham91/lint-json-inside-yaml@main
         with:
-          file_or_dir: ${{ steps.changed-files.outputs.all_changed_files }}
+          folder_or_file: ${{ steps.changed-files.outputs.all_changed_files }}
