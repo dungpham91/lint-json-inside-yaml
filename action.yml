@@ -10,6 +10,14 @@ inputs:
     description: 'Format for parsing output [parsable,standard,colored,github,auto]'
     required: false
     default: "parsable"
+  strict:
+    description: 'Return non-zero exit code on warnings as well as errors'
+    required: false
+    default: "false"
+  no_warnings:
+    description: 'Output only error level problems'
+    required: false
+    default: "false"
 
 outputs:
   logfile:
@@ -30,6 +38,8 @@ runs:
       env:
         INPUT_FILE_OR_DIR: ${{ inputs.folder_or_file }}
         INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_STRICT: ${{ inputs.strict }}
+        INPUT_NO_WARNINGS: ${{ inputs.no_warnings }}
 
 branding:
   color: blue

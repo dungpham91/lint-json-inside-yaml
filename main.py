@@ -47,6 +47,7 @@ def read_file(file_path):
                 return None
     except Exception as e:
         return None
+        sys.exit(1)
 
 def validate_json(json_contents, file_name):
     """
@@ -68,10 +69,12 @@ def validate_json(json_contents, file_name):
             except json.JSONDecodeError as e:
                 valid = False
                 print(f"File '{file_name}', JSON #{index + 1} is not valid: {str(e)}")
+                sys.exit(1)
         if valid:
             return f"File '{file_name}' is valid."
         else:
             return f"File '{file_name}' is not valid."
+            sys.exit(1)
     else:
         return f"No JSON content found in '{file_name}'."
 
@@ -81,11 +84,13 @@ def main():
     if not input_path:
         print("The INPUT_FILE_OR_DIR environment variable is not set.")
         return
+        sys.exit(1)
 
     files = check_folder_or_file(input_path)
 
     if not files:
         print("No valid files or folders found.")
+        sys.exit(1)
     else:
         for file_path in files:
             json_contents = read_file(file_path)
