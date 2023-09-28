@@ -1,0 +1,28 @@
+name: JSON Lint
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/**
+      - test-data/**
+
+jobs:
+  json-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@8238a4103220c636f2dad328ead8a7c8dbe316a3 # v39.2.0
+        with:
+          files: |
+            .github/**
+            test-data/**
+      - name: json-lint
+        uses: dungpham91/lint-json-inside-yaml@main
+        with:
+          file_or_dir: ${{ steps.changed-files.outputs.all_changed_files }}
