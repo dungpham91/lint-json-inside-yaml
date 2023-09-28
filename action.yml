@@ -17,7 +17,7 @@ outputs:
     value: ${{ steps.lintjson-data.outputs.logfile }}
 
 runs:
-  using: 'python3'
+  using: 'python'
   steps:
     - id: lintjson-data
       run: |
