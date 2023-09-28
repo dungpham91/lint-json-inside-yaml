@@ -76,6 +76,12 @@ def validate_json(json_contents, file_name):
         return f"No JSON content found in '{file_name}'."
 
 def main(input_path):
+    input_path = os.getenv("INPUT_FILE_OR_DIR")
+
+    if not input_path:
+        print("The INPUT_FILE_OR_DIR environment variable is not set.")
+        return
+
     files = check_folder_or_file(input_path)
 
     if not files:
@@ -90,6 +96,4 @@ def main(input_path):
                 print(f"No JSON content found in '{file_path}'.")
 
 if __name__ == "__main__":
-    # input_path = input("Enter the folder or file path: ")
-    input_path = "/home/dung/1-github.com/1-dungpham91/lint-json-inside-yaml/test-data"
-    main(input_path)
+    main()
