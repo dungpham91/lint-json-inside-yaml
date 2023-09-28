@@ -17,12 +17,16 @@ outputs:
     value: ${{ steps.lintjson-data.outputs.logfile }}
 
 runs:
-  using: 'python'
+  using: 'composite'
   steps:
+    - name: Install Python
+      uses: action/setup-python@v4
+      with:
+        python-version: '3.10'
     - id: lintjson-data
       run: |
         # export LOGFILE=$(mktemp lintjson-data-XXXXXX)
-        ${{ github.action_path }}/main.py
+        python main.py
       shell: bash
       env:
         INPUT_FILE_OR_DIR: ${{ inputs.folder_or_file }}
