@@ -3,14 +3,14 @@ import json
 
 def check_folder_or_file(input_path):
     """
-    Kiểm tra xem input là thư mục, 1 file hoặc nhiều file.
-    Trả về danh sách các tệp nếu là thư mục hoặc danh sách với một tệp nếu là tệp đơn.
+    Check if the input is a folder, a single file, or multiple files.
+    Returns a list of files if it's a folder or a list with a single file if it's a single file.
 
     Parameters:
-    input_path (str): Đường dẫn đến thư mục hoặc tệp.
+    input_path (str): The path to the folder or file.
 
     Returns:
-    list: Danh sách tệp nếu là thư mục hoặc danh sách với một tệp nếu là tệp đơn.
+    list: List of files if it's a folder, or a list with a single file if it's a single file.
     """
     if os.path.isdir(input_path):
         files = os.listdir(input_path)
@@ -22,13 +22,13 @@ def check_folder_or_file(input_path):
 
 def read_file(file_path):
     """
-    Đọc nội dung của tệp và tìm tất cả các nội dung JSON trong tệp.
+    Read the content of a file and find all JSON contents within the file.
 
     Parameters:
-    file_path (str): Đường dẫn đến tệp cần đọc.
+    file_path (str): The path to the file to read.
 
     Returns:
-    list: Danh sách các nội dung JSON nếu tìm thấy, None nếu không tìm thấy.
+    list: List of JSON contents if found, None if not found.
     """
     try:
         with open(file_path, 'r') as file:
@@ -50,36 +50,36 @@ def read_file(file_path):
 
 def validate_json(json_contents, file_name):
     """
-    Kiểm tra tính hợp lệ của nhiều nội dung JSON và trả về thông tin kết quả.
+    Check the validity of multiple JSON contents and return result information.
 
     Parameters:
-    json_contents (list): Danh sách các nội dung JSON cần kiểm tra.
-    file_name (str): Tên tệp.
+    json_contents (list): List of JSON contents to check.
+    file_name (str): The file name.
 
     Returns:
-    str: Kết quả kiểm tra hợp lệ và tên tệp.
+    str: Validation result and file name.
     """
     if json_contents:
         valid = True
         for index, json_content in enumerate(json_contents):
             try:
-                # Kiểm tra nội dung JSON hiện tại
+                # Check the current JSON content
                 json.loads(json_content)
             except json.JSONDecodeError as e:
                 valid = False
-                print(f"File '{file_name}', JSON #{index + 1} không hợp lệ: {str(e)}")
+                print(f"File '{file_name}', JSON #{index + 1} is not valid: {str(e)}")
         if valid:
-            return f"File '{file_name}' hợp lệ."
+            return f"File '{file_name}' is valid."
         else:
-            return f"File '{file_name}' không hợp lệ."
+            return f"File '{file_name}' is not valid."
     else:
-        return f"Không tìm thấy nội dung JSON trong '{file_name}'."
+        return f"No JSON content found in '{file_name}'."
 
 def main(input_path):
     files = check_folder_or_file(input_path)
 
     if not files:
-        print("Không tìm thấy tệp hoặc thư mục hợp lệ.")
+        print("No valid files or folders found.")
     else:
         for file_path in files:
             json_contents = read_file(file_path)
@@ -87,7 +87,7 @@ def main(input_path):
                 result = validate_json(json_contents, os.path.basename(file_path))
                 print(result)
             else:
-                print(f"Không tìm thấy nội dung JSON trong '{file_path}'.")
+                print(f"No JSON content found in '{file_path}'.")
 
 if __name__ == "__main__":
     # input_path = input("Enter the folder or file path: ")
