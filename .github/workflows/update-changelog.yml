@@ -17,6 +17,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
+          token: ${{ secrets.PAT }}
 
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@ab89eeba5adfbb4ebdaabf7f1a17d76eec6c59c9 # v1.9.1
@@ -30,3 +31,5 @@ jobs:
             branch: main
             commit_message: Update CHANGELOG
             file_pattern: CHANGELOG.md
+            commit_options: --signoff
+            push_options: --force
