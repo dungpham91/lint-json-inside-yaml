@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 
 def check_folder_or_file(input_path):
     """
