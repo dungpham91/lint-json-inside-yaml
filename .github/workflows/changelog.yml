@@ -1,0 +1,28 @@
+name: Changelog CI
+
+on:
+  pull_request:
+    types: [ opened ]
+
+  # Optionally you can use `workflow_dispatch` to run Changelog CI Manually
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Set Release Version'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+
+      - name: Run Changelog CI
+        uses: saadmk11/changelog-ci@94435ac02b50745a2543caf0c5d6eae23665615a # v1.1.2
+        id: changelog-ci
+
+      - name: Get Changelog Output
+        run: |
+          echo "${{ steps.changelog-ci.outputs.changelog }}"
+          echo "${{ steps.changelog-ci.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY

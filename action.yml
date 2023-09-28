@@ -33,7 +33,13 @@ runs:
         python-version: '3.10'
     - id: lintjson-data
       run: |
-        python main.py
+        if [[ -d "/__w/_actions" ]]; then
+          # This is a self-hosted container runner
+          python ${GITHUB_ACTION_PATH}/main.py
+        else
+          # This is a vm runner
+          python ${{ github.action_path }}/main.py
+        fi
       shell: bash
       env:
         INPUT_FILE_OR_DIR: ${{ inputs.folder_or_file }}
