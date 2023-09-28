@@ -3,10 +3,30 @@ description: 'Github Action detects and validates JSON data inside the YAML file
 author: 'Dung Pham'
 
 inputs:
-  yaml-files:
-    description: 'A list of YAML files to validate.'
-    required: true
+  folder_or_file:
+    description: 'File(s) or Directory, separate by space if multiple files or folder are specified'
+    required: false
+  format:
+    description: 'Format for parsing output [parsable,standard,colored,github,auto]'
+    required: false
+    default: "parsable"
+
+outputs:
+  logfile:
+    description: "Lint JSON data log file path"
+    value: ${{ steps.lintjson-data.outputs.logfile }}
 
 runs:
-  using: 'python'
-  main: 'main.py'
+  using: 'python3'
+  steps:
+    - id: lintjson-data
+      run: |
+        # export LOGFILE=$(mktemp lintjson-data-XXXXXX)
+        ${{ github.action_path }}/main.py
+      env:
+        INPUT_FILE_OR_DIR: ${{ inputs.folder_or_file }}
+        INPUT_FORMAT: ${{ inputs.format }}
+
+branding:
+  color: blue
+  icon: check-square
