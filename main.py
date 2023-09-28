@@ -35,6 +35,8 @@ def read_file(file_path):
         with open(file_path, 'r') as file:
             content = file.read()
             json_contents = []
+
+            # Find JSON content starting with '{' and ending with '}'
             json_start = content.find("{")
             while json_start != -1:
                 json_end = content.find("}", json_start + 1)
@@ -42,10 +44,12 @@ def read_file(file_path):
                     json_string = content[json_start:json_end + 1]
                     json_contents.append(json_string)
                 json_start = content.find("{", json_start + 1)
+
             if json_contents:
                 return json_contents
             else:
                 return None
+
     except Exception as e:
         return None
 
@@ -70,9 +74,11 @@ def validate_json(json_contents, file_name):
                 valid = False
                 print(f"File '{file_name}', JSON #{index + 1} is not valid: {str(e)}")
         if valid:
-            return f"File '{file_name}' is valid."
+            # If the JSON is valid, return True
+            return True
         else:
-            return f"File '{file_name}' is not valid."
+            # If the JSON is invalid, return False
+            return False
         
     else:
         return f"No JSON content found in '{file_name}'."
@@ -82,32 +88,32 @@ def main():
 
     if not input_path:
         print("The INPUT_FILE_OR_DIR environment variable is not set.")
-        return
+        exit(1)
 
     files = check_folder_or_file(input_path)
-
     # Set a variable that tracks whether all JSON is valid or not
     all_json_valid = True
 
     if not files:
         print("No valid files or folders found.")
+        exit(1)
     else:
         for file_path in files:
             json_contents = read_file(file_path)
             if json_contents is not None:
                 result = validate_json(json_contents, os.path.basename(file_path))
-                print(result)
+                if result is True:
+                    print(f"File '{file_path}' is valid.\n")
+                else:
+                    print(f"File '{file_path}' is not valid.\n")
                 if not result:
-                    # If there is invalid JSON, set the variable to False
                     all_json_valid = False
             else:
-                print(f"No JSON content found in '{file_path}'.")
+                print(f"No JSON content found in '{file_path}'.\n")
 
     if all_json_valid:
-        # All JSON is valid, return final error code True
         exit(0)
     else:
-        # There is at least one invalid JSON, return the final error code False
         exit(1)
 
 if __name__ == "__main__":
