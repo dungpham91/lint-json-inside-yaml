@@ -75,7 +75,7 @@ def validate_json(json_contents, file_name):
     else:
         return f"No JSON content found in '{file_name}'."
 
-def main(input_path):
+def main():
     input_path = os.getenv("INPUT_FILE_OR_DIR")
 
     if not input_path:
