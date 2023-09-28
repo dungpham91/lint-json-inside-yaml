@@ -1,5 +1,5 @@
 # python:3.9.18-alpine
-FROM python@sha256:eed69b68533d9083a09fc3f611a21f8c812b4fea29ab2e48c7f9372df3b13c3e
+FROM python@sha256:2e376990a11f1c1e03796d08db0e99c36eadb4bb6491372b227f1e53c3482914
 LABEL Maintainer="dungpham91"
 WORKDIR /usr/app/src
 RUN apk update && apk upgrade --no-cache && rm -rf ~/.cache/pip
