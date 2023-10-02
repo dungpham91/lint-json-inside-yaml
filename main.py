@@ -2,6 +2,26 @@ import os
 import json
 import sys
 
+# Khai báo và khởi tạo biến global
+def init_variables():
+    input_paths = os.getenv("INPUT_FILE_OR_DIR")
+    repository = os.getenv("GITHUB_REPOSITORY")
+    branch = os.getenv("GITHUB_REF")
+    github_step_summary = os.getenv('GITHUB_STEP_SUMMARY')
+
+    # Kiểm tra nếu bất kỳ biến nào không được thiết lập, in ra thông báo lỗi và kết thúc chương trình
+    if not input_paths:
+        print("::error::The INPUT_FILE_OR_DIR environment variable is not set.")
+        exit(1)
+    if not repository:
+        print("::error::The GITHUB_REPOSITORY environment variable is not set.")
+        exit(1)
+    if not branch:
+        print("::error::The GITHUB_REF environment variable is not set.")
+        exit(1)
+
+    return input_paths, repository, branch, github_step_summary
+
 def check_folder_or_file(input_paths):
     """
     Check if the input is a folder, a single file, or multiple files/folders.
@@ -91,7 +111,7 @@ def validate_json(json_contents, file_name):
                 json.loads(json_content)
             except json.JSONDecodeError as e:
                 valid = False
-                print(f"File '{file_name}', JSON #{index + 1} is not valid: {str(e)}")
+                print(f"::error::File '{file_name}', JSON block {index + 1} is not valid: {str(e)}")
         if valid:
             # If the JSON is valid, return True
             return True
@@ -103,43 +123,57 @@ def validate_json(json_contents, file_name):
         return f"No JSON content found in '{file_name}'."
 
 def main():
-    input_paths = os.getenv("INPUT_FILE_OR_DIR")
+    input_paths, repository, branch, github_step_summary = init_variables()
 
-    if not input_paths:
-        print("The INPUT_FILE_OR_DIR environment variable is not set.")
-        exit(1)
-
-    # Check if objects in input_paths exist
     invalid_inputs = check_folder_or_file(input_paths)
     if isinstance(invalid_inputs, str):
-        # If the function returns an error message, print the error message and exit with the error code
-        print(invalid_inputs)
+        print(f"::error::{invalid_inputs}")
         exit(1)
 
-    # Set a variable that tracks whether all JSON is valid or not
     all_json_valid = True
 
     if not invalid_inputs:
-        print("No valid files or folders found.")
+        print("::warning::No valid files or folders found.")
         exit(1)
     else:
+        results = []
+
+        # Định nghĩa các biến đếm cho các cột
+        passed_count = 0
+        failed_count = 0
+        empty_count = 0
+        skipped_count = 0
+
         for file_path in invalid_inputs:
+            # Lấy tên branch từ GITHUB_REF
+            branch_name = branch.split("/")[-1]
+
+            # Tạo đường dẫn đầy đủ đến tệp trong repository
+            file_url = f"https://github.com/{repository}/blob/{branch}/{file_path}"
+
             json_contents = read_file(file_path)
             if json_contents is not None:
                 result = validate_json(json_contents, os.path.basename(file_path))
                 if result is True:
-                    print(f"File '{file_path}' is valid.\n")
-                else:
-                    print(f"File '{file_path}' is not valid.\n")
-                if not result:
-                    all_json_valid = False
-            else:
-                print(f"No JSON content found in '{file_path}'.\n")
+                    passed_count += 1
+                    results.append(f"| [{file_path}]({file_url}) | :white_check_mark: | | | | JSON data is valid |")
+                elif result is False:
+                    failed_count += 1
+                    results.append(f"| [{file_path}]({file_url}) | | :x: | | | JSON is not valid |")
+                elif result == "empty":
+                    empty_count += 1
+                    results.append(f"| [{file_path}]({file_url}) | | | :grey_exclamation: | | file is empty |")
+                elif result == "skipped":
+                    skipped_count += 1
+                    results.append(f"| [{file_path}]({file_url}) | | | | :arrow_right_hook: | Skipped |")
 
-    if all_json_valid:
-        exit(0)
-    else:
-        exit(1)
+        # Tạo bảng Markdown
+        summary = f"| :open_file_folder: **File** | :white_check_mark: **Passed** | :x: **Failed** | :grey_exclamation: **Empty** | :arrow_right_hook: **Skipped** | :trollface: **Message** |\n| ------ | ------ | ------ | ------ | ------ | ------ |\n{'\n'.join(results)}"
+
+        github_step_summary = os.getenv('GITHUB_STEP_SUMMARY')
+        if github_step_summary:
+            with open(github_step_summary, 'a') as file:
+                file.write(summary + '\n')
 
 if __name__ == "__main__":
     main()

@@ -3,7 +3,7 @@ name: JSON Lint
 on:
   push:
     branches:
-      - main
+      - feat/format-output
 
 jobs:
   json-check:
@@ -14,7 +14,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: json-lint
-        uses: dungpham91/lint-json-inside-yaml@main
+      # Check with single file
+      - name: json-lint-single-file
+        uses: dungpham91/lint-json-inside-yaml@feat/format-output
         with:
-          folder_or_file: ./test-data
+          folder_or_file: test-data/empty-json.yaml
+
+      # Check with a folder
+      - name: json-lint-a-folder
+        uses: dungpham91/lint-json-inside-yaml@feat/format-output
+        with:
+          folder_or_file: test-data

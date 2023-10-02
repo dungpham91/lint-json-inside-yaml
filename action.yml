@@ -20,9 +20,16 @@ inputs:
     default: "false"
 
 outputs:
-  logfile:
-    description: "Lint JSON data log file path"
-    value: ${{ steps.lintjson-data.outputs.logfile }}
+  result:
+    description: 'The linting result'
+  passed:
+    description: 'Number of files passed validation'
+  failed:
+    description: 'Number of files failed validation'
+  empty:
+    description: 'Number of empty files'
+  skipped:
+    description: 'Number of skipped files'
 
 runs:
   using: 'composite'
