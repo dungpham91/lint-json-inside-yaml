@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.0.2 - 2023-10-02
+
+### What's Changed
+
+- Update CHANGELOG by @dungpham91 in https://github.com/dungpham91/lint-json-inside-yaml/pull/20
+- Feat: Add input handling if it is a dot, i.e. current directory by @dungpham91 in https://github.com/dungpham91/lint-json-inside-yaml/pull/21
+- Feat: Add input processing for multiple files and folders at the same… by @dungpham91 in https://github.com/dungpham91/lint-json-inside-yaml/pull/22
+- Feat: Add input handling for non-existing files or folders by @dungpham91 in https://github.com/dungpham91/lint-json-inside-yaml/pull/23
+
+**Full Changelog**: https://github.com/dungpham91/lint-json-inside-yaml/compare/v0.0.1...v0.0.2
+
 ## v0.0.1 - 2023-09-28
 
 ### What's Changed
