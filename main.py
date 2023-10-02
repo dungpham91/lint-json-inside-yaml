@@ -5,7 +5,8 @@ import sys
 def check_folder_or_file(input_path):
     """
     Check if the input is a folder, a single file, or multiple files.
-    Returns a list of files if it's a folder or a list with a single file if it's a single file.
+    Returns a list of files if it's a folder, or a list with a single file if it's a single file.
+    If input_path is '.', it lists all files in the current directory recursively.
 
     Parameters:
     input_path (str): The path to the folder or file.
@@ -13,7 +14,14 @@ def check_folder_or_file(input_path):
     Returns:
     list: List of files if it's a folder, or a list with a single file if it's a single file.
     """
-    if os.path.isdir(input_path):
+    if input_path == '.':
+        # List all files in the current directory and its subdirectories recursively
+        files = []
+        for root, _, filenames in os.walk('.'):
+            for filename in filenames:
+                files.append(os.path.join(root, filename))
+        return files
+    elif os.path.isdir(input_path):
         files = os.listdir(input_path)
         return [os.path.join(input_path, file) for file in files]
     elif os.path.isfile(input_path):
