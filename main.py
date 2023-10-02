@@ -13,8 +13,9 @@ def check_folder_or_file(input_paths):
 
     Returns:
     list: List of files if they are folders, or a list with a single file/folder if it's a single file/folder.
+    str: Error message if any input does not exist.
     """
-    input_paths = input_paths.split()  # Chia chuỗi thành danh sách các đối tượng
+    input_paths = input_paths.split()  # Split string into list of objects
     files = []
     for input_path in input_paths:
         if input_path == '.':
@@ -23,6 +24,10 @@ def check_folder_or_file(input_paths):
                 for filename in filenames:
                     files.append(os.path.join(root, filename))
         else:
+            # Check if the input_path exists
+            if not os.path.exists(input_path):
+                return f"Error: {input_path} does not exist."
+
             # Check if the input_path is a directory
             if os.path.isdir(input_path):
                 # List all files in the directory and its subdirectories recursively
@@ -31,8 +36,7 @@ def check_folder_or_file(input_paths):
                         files.append(os.path.join(root, filename))
             else:
                 # If it's not a directory, assume it's a single file or folder
-                if os.path.exists(input_path):
-                    files.append(input_path)
+                files.append(input_path)
 
     return files
 
@@ -105,15 +109,21 @@ def main():
         print("The INPUT_FILE_OR_DIR environment variable is not set.")
         exit(1)
 
-    files = check_folder_or_file(input_paths)
+    # Check if objects in input_paths exist
+    invalid_inputs = check_folder_or_file(input_paths)
+    if isinstance(invalid_inputs, str):
+        # If the function returns an error message, print the error message and exit with the error code
+        print(invalid_inputs)
+        exit(1)
+
     # Set a variable that tracks whether all JSON is valid or not
     all_json_valid = True
 
-    if not files:
+    if not invalid_inputs:
         print("No valid files or folders found.")
         exit(1)
     else:
-        for file_path in files:
+        for file_path in invalid_inputs:
             json_contents = read_file(file_path)
             if json_contents is not None:
                 result = validate_json(json_contents, os.path.basename(file_path))
