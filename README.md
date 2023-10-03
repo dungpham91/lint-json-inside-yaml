@@ -7,16 +7,18 @@ This action detects and validates JSON data inside YAML files.
 Simple as:
 
 ```yaml
-uses: dungpham91/lint-json-inside-yaml@v0.0.1
+uses: dungpham91/lint-json-inside-yaml@v0.0.2
 ```
 
 ### Optional input parameters
 
-- `folder_or_file` - Enter file/folder (space separated), wildcards accepted. Examples:
-  - `.` - check JSON for all files in the current directory
-  - `file1.yaml` - check JSON for 1 file
-  - `file1.yaml file2.yaml` - check JSON for 2 files
-  - `folder1/*.yaml folder2/*values.yaml` - Check JSON for files in directory with wildcard
+- `folder_or_file` - enter file/folder (space separated), wildcards accepted. Examples:
+  - `.` - checks for JSON in all files of the current folder, including recursive subfolders
+  - `file1.yaml` - check JSON for a single file
+  - `file1.yaml file2.yaml` - check JSON for 2 or more files
+  - `folder1 folder2` - check JSON for 2 or more folders
+  - `folder1 file1.yaml` - check JSON for both file and folder at the same time
+  - `folder1/*.yaml folder2/*values.yaml` - check JSON for files in folder using wildcards
 
 ### Example usage in workflow
 
@@ -36,7 +38,7 @@ jobs:
           fetch-depth: 0
 
       - name: JSON lint
-        uses: dungpham91/lint-json-inside-yaml@v0.0.1
+        uses: dungpham91/lint-json-inside-yaml@v0.0.2
         with:
           folder_or_file: ./test-data
 ```
@@ -68,7 +70,7 @@ jobs:
             test-data/**
 
       - name: JSON lint
-        uses: dungpham91/lint-json-inside-yaml@v0.0.1
+        uses: dungpham91/lint-json-inside-yaml@v0.0.2
         with:
           folder_or_file: ${{ steps.changed-files.outputs.all_changed_files }}
 ```
