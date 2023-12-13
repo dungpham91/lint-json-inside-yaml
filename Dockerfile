@@ -1,5 +1,5 @@
 # 3.12.0rc3-alpine3.18
-FROM python@sha256:6d7fa2d5653e1d0eb464a672ded01f973e49e4a7ded59703c7bdcf6b92eac736
+FROM python@sha256:a25e0cf180ee1bbbc103bb39508fb12b75020427abaaff83bec5999454c3735f
 LABEL Maintainer="dungpham91"
 WORKDIR /usr/app/src
 COPY main.py ./
