@@ -1,5 +1,5 @@
 # python:3.12.1
-FROM python@sha256:28f60ab75da2183870846130cead1f6af30162148d3238348f78f89cf6160b5d
+FROM python@sha256:4ea77121eab13d9e71f2783d7505f5655b25bb7b2c263e8020aae3b555dbc0b2
 LABEL Maintainer="dungpham91"
 WORKDIR /usr/app/src
 COPY main.py ./
